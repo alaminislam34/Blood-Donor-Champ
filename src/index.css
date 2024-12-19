@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Noto Sans Bengali", sans-serif;
+}
+.loginForm input {
+  box-shadow: 2px 10px 6px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 0.5px solid rgb(180, 180, 180);
+}
+
+a.active {
+  color: rgb(173, 21, 67);
+  font-weight: 700;
+  border-bottom: 2px solid rgb(250, 4, 86);
+  padding-bottom: 4px;
+}
+
+.swiper-slide {
+  user-select: text;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Ensure each slide takes full height */
+}
+
+.btn-grad {
+  background-image: linear-gradient(
+    to right,
+    #ff512f 0%,
+    #dd2476 51%,
+    rgb(255, 81, 47) 100%
+  );
+}
+.btn-grad {
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
+
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.donorForm input,
+select {
+  background-color: transparent;
+  border: 1px solid gray;
+}
