@@ -96,7 +96,12 @@ const Donar = () => {
           onChange={handleBloodGroup}
           className="py-1.5 px-3 bg-gradient-to-r from-pink-400 to-red-500 cursor-pointer *:cursor-pointer"
         >
-          <option defaultValue="Select group" disabled className="text-xs">
+          <option
+            defaultValue="Select group"
+            selected
+            disabled
+            className="text-xs"
+          >
             গ্রুপ সিলেক্ট করুন
           </option>
           <option>A+</option>
@@ -187,7 +192,7 @@ const Donar = () => {
           ))}
         </div>
       ) : (
-        <p className="text-center">কোনো ডোনার নাই</p>
+        <p className="text-center mt-12">কোনো ডোনার নাই</p>
       )}
     </div>
   );
