@@ -3,29 +3,33 @@ import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../ContextProvider/AuthContext";
 import { FaFacebook, FaWhatsapp } from "react-icons/fa";
 import Marquee from "react-fast-marquee";
+import axios from "axios";
 
 const Donar = () => {
   const { theme, user } = useContext(AuthContext);
   const [donor, setDonor] = useState([]);
-  const donar = useLoaderData();
+  const [address, setAddress] = useState("");
+  const [bloodGroup, setBloodGroup] = useState("");
 
   useEffect(() => {
-    setDonor(donar);
-  }, []);
+    axios
+      .get(`${import.meta.env.VITE_URL}/donar`, {
+        params: { address, bloodGroup },
+        withCredentials: true,
+      })
+      .then((res) => {
+        setDonor(res.data);
+      });
+  }, [address, bloodGroup]);
 
   const handleSortDonarArea = (e) => {
-    e.preventDefault();
-    const area = e.target.area.value;
-    const selectDonor = donar.filter((d) =>
-      d.address.toLowerCase().includes(area.toLowerCase())
-    );
-    setDonor(selectDonor);
+    const area = e.target.value;
+    setAddress(area);
   };
 
   const handleBloodGroup = (value) => {
     const group = value.target.value;
-    const groupDonor = donar.filter((d) => d.blood_group === group);
-    setDonor(groupDonor);
+    setBloodGroup(group);
   };
 
   return (
@@ -59,15 +63,15 @@ const Donar = () => {
       )}
 
       <div className="w-full flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-4 items-center">
-        <form
+        <div
           data-aos="fade-right"
           data-aos-delay="500"
           data-aos-easing="ease-in-out"
           data-aos-duration="1500"
-          onSubmit={handleSortDonarArea}
           className="flex flex-row items-center"
         >
           <input
+            onChange={handleSortDonarArea}
             type="text"
             name="area"
             placeholder="Search area"
@@ -85,7 +89,7 @@ const Donar = () => {
               <span className="absolute -top-24 -right-24 rounded-full group-hover:-rotate-12 group-hover:-top-8 group-hover:-right-10 w-[120px] h-[100px] bg-gradient-to-l from-pink-400 to-red-500 transition-all duration-500"></span>
             </button>
           </div>
-        </form>
+        </div>
 
         <select
           data-aos="fade-left"
@@ -96,22 +100,17 @@ const Donar = () => {
           onChange={handleBloodGroup}
           className="py-1.5 px-3 bg-gradient-to-r from-pink-400 to-red-500 cursor-pointer *:cursor-pointer"
         >
-          <option
-            defaultValue="Select group"
-            selected
-            disabled
-            className="text-xs"
-          >
+          <option value={""} className="text-xs">
             গ্রুপ সিলেক্ট করুন
           </option>
-          <option>A+</option>
-          <option>A-</option>
-          <option>B+</option>
-          <option>B-</option>
-          <option>O+</option>
-          <option>O-</option>
-          <option>AB+</option>
-          <option>AB-</option>
+          <option value={"A+"}>A+</option>
+          <option value={"A-"}>A-</option>
+          <option value={"B+"}>B+</option>
+          <option value={"B-"}>B-</option>
+          <option value={"O+"}>O+</option>
+          <option value={"O-"}>O-</option>
+          <option value={"AB+"}>AB+</option>
+          <option value={"AB-"}>AB-</option>
         </select>
       </div>
 
@@ -142,7 +141,7 @@ const Donar = () => {
                   <p className="text-sm">
                     <span className="font-semibold">রক্তের গ্রুপ</span>:{" "}
                     <span className="text-red-600 font-bold italic bg-base-300 px-2">
-                      {d.blood_group}
+                      {d.bloodGroup}
                     </span>
                   </p>
                   <p className="text-sm">
@@ -157,11 +156,11 @@ const Donar = () => {
                 <div className="flex *:flex-1">
                   <p className="text-sm">
                     <span className="font-semibold">স্বাস্থ্যের অবস্থা</span>:{" "}
-                    {d.health_info}
+                    {d.healthInfo}
                   </p>
                   <p className="text-sm">
                     <span className="font-semibold">পূর্বের রক্তদান</span>:{" "}
-                    {d.prev_donate}
+                    {d.prevDonate}
                   </p>
                 </div>
                 <div>
@@ -169,19 +168,19 @@ const Donar = () => {
                   <ul className="flex flex-col sm:flex-row gap-4 items-center">
                     <p>সামাজিক মাধ্যম: </p>
                     <div className="flex flex-row gap-2">
-                      {d.fb_link && (
+                      {d.fbLink && (
                         <li className="w-6 h-6 bg-base-200 flex justify-center items-center text-xl lg:text-2xl rounded-full bg-gradient-to-tr from-blue-500 to-blue-600 text-white cursor-pointer duration-300">
-                          <a href={user ? d.fb_link : "#"}>
+                          <a href={user ? d.fbLink : "#"}>
                             <FaFacebook />
                           </a>
                         </li>
                       )}
-                      {d.whatsapp_number && (
+                      {d.whatsappNumber && (
                         <div className="flex flex-row items-center gap-2">
                           <li className="w-6 h-6 bg-base-200 flex justify-center items-center text-xl lg:text-2xl rounded-full bg-gradient-to-tr from-green-500 to-green-600 text-white">
                             <FaWhatsapp />
                           </li>
-                          <p>{user ? d.whatsapp_number : "*******"}</p>
+                          <p>{user ? d.whatsappNumber : "*******"}</p>
                         </div>
                       )}
                     </div>

@@ -1,8 +1,4 @@
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
 import axios from "axios";
@@ -32,12 +28,15 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
 
             // Logout request
-            await axios.post(
-              "https://blood-donation-server-ar.vercel.app/logout",
-              {},
-              { withCredentials: true }
-            );
           } else {
+            const userEmail = { email: currentUser?.email };
+            axios
+              .post(`${import.meta.env.VITE_URL}/jwt`, userEmail, {
+                withCredentials: true,
+              })
+              .then((res) => console.log(res.data))
+              .catch((error) => console.log(error));
+
             const { displayName, email, emailVerified, uid, photoURL } =
               currentUser;
 
@@ -50,13 +49,9 @@ const AuthProvider = ({ children }) => {
             formData.append("uid", uid);
 
             axios
-              .post(
-                "https://blood-donation-server-ar.vercel.app/users",
-                formData,
-                {
-                  withCredentials: true,
-                }
-              )
+              .post(`${import.meta.env.VITE_URL}/users`, formData, {
+                withCredentials: true,
+              })
               .then((res) => {});
 
             setUser(currentUser);
@@ -68,6 +63,15 @@ const AuthProvider = ({ children }) => {
           setLoading(false);
         }
       } else {
+        await axios
+          .post(
+            `${import.meta.env.VITE_URL}/logout`,
+            {},
+            { withCredentials: true }
+          )
+          .then((res) => {
+            console.log(res.data);
+          });
         setUser(null);
         setLoading(false);
       }

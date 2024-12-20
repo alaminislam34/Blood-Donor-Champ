@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 
 const Reviews = () => {
-  const { theme, user, setLoader } = useContext(AuthContext);
+  const { theme, user } = useContext(AuthContext);
   const [reviews, setReviews] = useState([]);
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ const Reviews = () => {
   const fetchReviews = async () => {
     try {
       const result = await axios.get(
-        "https://blood-donation-server-ar.vercel.app/donor-reviews"
+        `${import.meta.env.VITE_URL}/donor-reviews`
       );
       setReviews(result.data);
     } catch (error) {
@@ -58,7 +58,7 @@ const Reviews = () => {
       try {
         // Update like count and likedBy
         const result = await axios.patch(
-          `https://blood-donation-server-ar.vercel.app/donor-reviews/${id}`,
+          `${import.meta.env.VITE_URL}/donor-reviews/${id}`,
           { userEmail }
         );
         // Update local state to reflect changes immediately

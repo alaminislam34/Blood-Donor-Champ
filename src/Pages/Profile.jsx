@@ -72,7 +72,7 @@ const Profile = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`https://blood-donation-server-ar.vercel.app/donors/${email}`)
+          .delete(`${import.meta.env.VITE_URL}/donar/${email}`)
           .then((result) => {
             if (result.data.deletedCount > 0) {
               Swal.fire({

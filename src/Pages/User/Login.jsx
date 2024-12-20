@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../ContextProvider/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
@@ -10,7 +10,6 @@ import {
 } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import Swal from "sweetalert2";
-import axios from "axios";
 
 const Login = () => {
   const { theme, setUser, setAuthError, setLoader } = useContext(AuthContext);
