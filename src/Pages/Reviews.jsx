@@ -143,7 +143,7 @@ const Reviews = () => {
             data-aos-delay="500"
             data-aos-duration="1500"
             key={review._id}
-            className="p-4 md:p-6 rounded-lg shadow-lg border bg-gradient-to-br from-pink-50 to-white hover:shadow-2xl transition-shadow duration-300 flex gap-4 items-start"
+            className="p-4 md:p-6 rounded-lg shadow-lg border flex gap-4 items-start"
           >
             {/* User Image */}
             <div className="flex-shrink-0">
@@ -157,13 +157,11 @@ const Reviews = () => {
             {/* Review Content */}
             <div className="flex-1 space-y-2">
               {/* User Name */}
-              <h3 className="text-base md:text-lg font-semibold text-gray-800">
+              <h3 className="text-base md:text-lg font-semibold ">
                 নাম: {review.name || review.displayName}
               </h3>
               {/* Review Text */}
-              <p className="text-sm md:text-base text-gray-600">
-                {review.reviews}
-              </p>
+              <p className="text-sm md:text-base">{review.reviews}</p>
 
               {/* Action Buttons */}
               <div className="flex justify-between items-center pt-2">
@@ -184,7 +182,7 @@ const Reviews = () => {
                 {review?.email === user?.email && (
                   <button
                     onClick={() => handleDeleteComment(review._id)}
-                    className="text-sm md:text-base px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors duration-300"
+                    className="text-sm md:text-base btn btn-sm rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors duration-300"
                   >
                     ডিলিট
                   </button>
@@ -255,16 +253,13 @@ const Reviews = () => {
               className="flex flex-col gap-6 w-full max-w-md"
             >
               {/* Title */}
-              <h3 className="text-3xl lg:text-4xl font-bold text-center text-gray-800 dark:text-gray-100">
+              <h3 className="text-3xl lg:text-4xl font-bold text-center ">
                 কমেন্ট করুন
               </h3>
 
               {/* Name Input */}
               <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="name"
-                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
+                <label htmlFor="name" className="text-sm font-medium ">
                   আপনার নাম
                 </label>
                 <input
@@ -274,18 +269,13 @@ const Reviews = () => {
                   {...register("name", { required: "আপনার নাম লিখুন" })}
                 />
                 {errors.name && (
-                  <span className="text-xs text-red-500">
-                    {errors.name.message}
-                  </span>
+                  <span className="text-xs ">{errors.name.message}</span>
                 )}
               </div>
 
               {/* Review Textarea */}
               <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="reviews"
-                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
+                <label htmlFor="reviews" className="text-sm font-medium ">
                   কমেন্ট লিখুন
                 </label>
                 <textarea
