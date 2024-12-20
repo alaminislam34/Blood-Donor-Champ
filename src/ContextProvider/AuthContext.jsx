@@ -31,28 +31,15 @@ const AuthProvider = ({ children }) => {
           } else {
             const userEmail = { email: currentUser?.email };
             axios
-              .post(`${import.meta.env.VITE_URL}/jwt`, userEmail, {
-                withCredentials: true,
-              })
-              .then((res) => console.log(res.data))
+              .post(
+                `https://blood-donation-server-ar.vercel.app/jwt`,
+                userEmail,
+                {
+                  withCredentials: true,
+                }
+              )
+              .then(() => {})
               .catch((error) => console.log(error));
-
-            const { displayName, email, emailVerified, uid, photoURL } =
-              currentUser;
-
-            //  / Prepare FormData
-            const formData = new FormData();
-            formData.append("email", email);
-            formData.append("photoURL", photoURL);
-            formData.append("displayName", displayName);
-            formData.append("emailVerified", emailVerified);
-            formData.append("uid", uid);
-
-            axios
-              .post(`${import.meta.env.VITE_URL}/users`, formData, {
-                withCredentials: true,
-              })
-              .then((res) => {});
 
             setUser(currentUser);
             setLoading(false);
@@ -65,15 +52,16 @@ const AuthProvider = ({ children }) => {
       } else {
         await axios
           .post(
-            `${import.meta.env.VITE_URL}/logout`,
+            `https://blood-donation-server-ar.vercel.app/logout`,
             {},
             { withCredentials: true }
           )
-          .then((res) => {
-            console.log(res.data);
+          .then(() => {
+            {
+              setUser(null);
+              setLoading(false);
+            }
           });
-        setUser(null);
-        setLoading(false);
       }
     });
 

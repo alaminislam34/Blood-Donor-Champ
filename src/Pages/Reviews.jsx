@@ -36,7 +36,7 @@ const Reviews = () => {
   const fetchReviews = async () => {
     try {
       const result = await axios.get(
-        `${import.meta.env.VITE_URL}/donor-reviews`
+        `https://blood-donation-server-ar.vercel.app/donor-reviews`
       );
       setReviews(result.data);
     } catch (error) {
@@ -58,7 +58,7 @@ const Reviews = () => {
       try {
         // Update like count and likedBy
         const result = await axios.patch(
-          `${import.meta.env.VITE_URL}/donor-reviews/${id}`,
+          `https://blood-donation-server-ar.vercel.app/donor-reviews/${id}`,
           { userEmail }
         );
         // Update local state to reflect changes immediately
@@ -89,7 +89,10 @@ const Reviews = () => {
       try {
         const result = await axios.post(
           "https://blood-donation-server-ar.vercel.app/donor-reviews",
-          { ...data, ...userInfo }
+          {
+            ...data,
+            ...userInfo,
+          }
         );
         if (result.data.insertedId) {
           Swal.fire({
@@ -140,36 +143,48 @@ const Reviews = () => {
             data-aos-delay="500"
             data-aos-duration="1500"
             key={review._id}
-            className="p-2 md:p-3 rounded-lg shadow-md border"
+            className="p-4 md:p-6 rounded-lg shadow-lg border bg-gradient-to-br from-pink-50 to-white hover:shadow-2xl transition-shadow duration-300 flex gap-4 items-start"
           >
-            <div>
+            {/* User Image */}
+            <div className="flex-shrink-0">
               <img
-                className="w-16 object-cover rounded-full"
+                className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-full border-4 border-pink-300 shadow-md"
                 src={userImage}
                 alt={review.displayName || "User"}
               />
             </div>
-            <div className="space-y-1.5 lg:space-y-2">
-              <h3 className="text-[15px] sm:text-base md:text-lg font-semibold">
+
+            {/* Review Content */}
+            <div className="flex-1 space-y-2">
+              {/* User Name */}
+              <h3 className="text-base md:text-lg font-semibold text-gray-800">
                 নাম: {review.name || review.displayName}
               </h3>
-              <p className="text-sm lg:text-base">{review.reviews}</p>
-              <div className="px-2 flex justify-between items-center">
+              {/* Review Text */}
+              <p className="text-sm md:text-base text-gray-600">
+                {review.reviews}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex justify-between items-center pt-2">
+                {/* Like Button */}
                 <button
                   onClick={() => handleLike(review._id)}
-                  disabled={review.likedBy.includes(user?.email)} // Disable if already liked
-                  className={`flex flex-row items-center gap-2 text-xl ${
+                  disabled={review.likedBy.includes(user?.email)}
+                  className={`flex items-center gap-1 text-lg md:text-xl font-medium ${
                     review.likedBy.includes(user?.email)
                       ? "text-red-500"
-                      : "text-gray-500"
+                      : "text-gray-500 hover:text-red-500 transition-colors duration-300"
                   }`}
                 >
                   <BiSolidLike /> <span>{review.likeCount}</span>
                 </button>
+
+                {/* Delete Button (Only for Current User) */}
                 {review?.email === user?.email && (
                   <button
                     onClick={() => handleDeleteComment(review._id)}
-                    className="py-1 px-2 rounded-lg text-xs md:text-sm"
+                    className="text-sm md:text-base px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors duration-300"
                   >
                     ডিলিট
                   </button>
@@ -204,60 +219,79 @@ const Reviews = () => {
           </p>
         </div>
         <div
-          className={`flex flex-col rounded-lg overflow-hidden ${
-            theme === "light" ? "" : ""
-          } md:flex-row-reverse items-center *:flex-1 w-11/12 sm:w-10/12 mx-auto`}
+          className={`flex flex-col md:flex-row items-center justify-center rounded-xl *:flex-1 overflow-hidden shadow-lg ${
+            theme === "light" ? "bg-white" : "bg-gray-800"
+          } w-11/12 sm:w-10/12 mx-auto`}
         >
+          {/* Animation Section */}
           <div
             data-aos="fade-right"
             data-aos-offset="200"
-            data-aos-delay="1100"
+            data-aos-delay="600"
             data-aos-duration="1200"
-            className={`${theme === "light" ? "" : " "}`}
+            className={`w-full h-full object-cover bg-cover flex justify-center items-center ${
+              theme === "light"
+                ? "bg-gradient-to-br from-pink-100 to-red-100"
+                : "bg-gray-900"
+            } p-4 rounded-l-xl`}
           >
-            <Lottie animationData={feedback}></Lottie>
+            <Lottie animationData={feedback} className="" />
           </div>
-          <div className="h-full w-full">
+
+          {/* Form Section */}
+          <div
+            data-aos="fade-left"
+            data-aos-offset="200"
+            data-aos-delay="1000"
+            data-aos-duration="1200"
+            className={`w-full md:w-1/2 flex flex-col justify-center items-center p-8 lg:p-10 ${
+              theme === "light"
+                ? "bg-gradient-to-tr from-red-50 to-pink-100"
+                : "bg-gradient-to-br from-red-900 to-gray-900"
+            } rounded-r-xl shadow-xl`}
+          >
             <form
-              data-aos="fade-left"
-              data-aos-offset="200"
-              data-aos-delay="1500"
-              data-aos-duration="1500"
               onSubmit={handleSubmit(handleReviews)}
-              className={`flex flex-col gap-4 p-4 lg:p-6 py-6 lg:py-12 h-full rounded-lg ${
-                theme === "light"
-                  ? "bg-gradient-to-tr from-red-100 to-red-200"
-                  : "bg-gradient-to-br from-[#f74747] to-[#701c1c]"
-              }`}
+              className="flex flex-col gap-6 w-full max-w-md"
             >
+              {/* Title */}
+              <h3 className="text-3xl lg:text-4xl font-bold text-center text-gray-800 dark:text-gray-100">
+                কমেন্ট করুন
+              </h3>
+
+              {/* Name Input */}
               <div className="flex flex-col gap-1">
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-center my-2">
-                  কমেন্ট করুন
-                </h3>
-                <label htmlFor="name">আপনার নাম</label>
+                <label
+                  htmlFor="name"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  আপনার নাম
+                </label>
                 <input
                   type="text"
                   placeholder="আপনার নাম"
-                  className="py-1.5 lg:py-2 px-3 lg:px-4 rounded-lg"
+                  className="py-3 px-5 rounded-lg border-2 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-pink-400 focus:outline-none transition-all"
                   {...register("name", { required: "আপনার নাম লিখুন" })}
                 />
                 {errors.name && (
-                  <span
-                    className={` text-xs ${
-                      theme === "light" ? "text-red-500" : "text-gray-400"
-                    }`}
-                  >
+                  <span className="text-xs text-red-500">
                     {errors.name.message}
                   </span>
                 )}
               </div>
+
+              {/* Review Textarea */}
               <div className="flex flex-col gap-1">
-                <label htmlFor="reviews">কমেন্ট লিখুন</label>
+                <label
+                  htmlFor="reviews"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  কমেন্ট লিখুন
+                </label>
                 <textarea
                   rows={5}
-                  cols={5}
                   placeholder="এখানে আপনার কমেন্ট লিখুন..."
-                  className="py-1.5 lg:py-2 px-3 lg:px-4 rounded-lg"
+                  className="py-3 px-5 rounded-lg border-2 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-pink-400 focus:outline-none transition-all"
                   {...register("reviews", {
                     required: "আপনাকে সর্বোনিম্ন ৫ শব্দের কমেন্ট করতে হবে.",
                     validate: (value) => {
@@ -272,27 +306,23 @@ const Reviews = () => {
                   })}
                 ></textarea>
                 {errors.reviews && (
-                  <span
-                    className={` text-xs ${
-                      theme === "light" ? "text-red-500" : "text-gray-400"
-                    }`}
-                  >
+                  <span className="text-xs text-red-500">
                     {errors.reviews.message}
                   </span>
                 )}
               </div>
-              <div>
-                <button
-                  type="submit"
-                  className={`text-lg font-bold py-1.5 lg:py-2 mt-4 rounded-lg w-full ${
-                    theme === "light"
-                      ? "bg-gradient-to-r from-red-400 to-pink-400"
-                      : "bg-gradient-to-r from-red-300 to-pink-300 text-red-500"
-                  }`}
-                >
-                  কমেন্ট রিভিউ
-                </button>
-              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className={`text-lg font-bold py-3 px-6 mt-4 rounded-lg w-full ${
+                  theme === "light"
+                    ? "bg-gradient-to-r from-pink-400 to-red-400 text-white hover:from-red-500 hover:to-pink-500"
+                    : "bg-gradient-to-r from-gray-700 to-red-500 text-gray-100 hover:from-gray-600 hover:to-red-400"
+                } transition-all duration-300 transform hover:scale-105`}
+              >
+                কমেন্ট রিভিউ
+              </button>
             </form>
           </div>
         </div>

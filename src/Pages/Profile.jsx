@@ -72,7 +72,7 @@ const Profile = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${import.meta.env.VITE_URL}/donar/${email}`)
+          .delete(`https://blood-donation-server-ar.vercel.app/donar/${email}`)
           .then((result) => {
             if (result.data.deletedCount > 0) {
               Swal.fire({
@@ -98,84 +98,61 @@ const Profile = () => {
         {loading ? (
           ""
         ) : (
-          <div
-            data-aos="zoom-in"
-            data-aos-duration="1500"
-            className={`flex justify-center items-center py-12`}
-          >
+          <div className="relative flex justify-center items-center py-12 min-h-screen">
+            {/* Decorative Background Shape */}
+
+            {/* Profile Card */}
             <div
-              className={`p-4 md:p-6 shadow-2xl rounded-xl backdrop-blur-md flex flex-col justify-center items-center space-y-2 md:space-y-4 md:w-80 w-72 duration-700 ${
+              className={`p-6 md:p-8 shadow-xl rounded-2xl backdrop-blur-lg flex flex-col justify-center items-center space-y-4 w-80 md:w-96 ${
                 theme === "light"
-                  ? "bg-gradient-to-tr from-pink-200 via-red-300 to-red-400"
-                  : "bg-gradient-to-tr from-red-400 via-red-400 to-pink-300 text-white"
+                  ? "bg-gradient-to-br from-pink-50 via-white to-red-50 text-gray-800"
+                  : "bg-gradient-to-br from-gray-700 via-gray-800 to-black text-white"
               }`}
             >
-              <div
-                data-aos="zoom-in"
-                data-aos-duration="1500"
-                className="w-28 md:w-36 h-28 md:h-36 rounded-full overflow-hidden"
-              >
+              {/* Profile Image */}
+              <div className="w-32 md:w-40 h-32 md:h-40 rounded-full overflow-hidden border-4 border-pink-400">
                 <img
-                  className="w-full h-full object-cover bg-center"
+                  className="w-full h-full object-cover"
                   src={user?.photoURL || userImage}
-                  alt=""
+                  alt="User Profile"
                 />
               </div>
-              <h2
-                data-aos="zoom-in"
-                data-aos-duration="1500"
-                className="text-lg md:text-xl font-semibold"
-              >
-                নাম: {user?.displayName}
+
+              {/* User Name */}
+              <h2 className="text-lg md:text-2xl font-bold">
+                নাম: {user?.displayName || "অজানা"}
               </h2>
-              <p
-                data-aos="zoom-in"
-                data-aos-duration="1500"
-                className="text-xs md:text-sm lg:text-base"
-              >
-                ইমেল: {user?.email}
+
+              {/* User Email */}
+              <p className="text-sm md:text-base text-center">
+                ইমেল: {user?.email || "ইমেল পাওয়া যায়নি"}
               </p>
-              <div className="flex flex-row gap-3 pt-4">
+
+              {/* Buttons */}
+              <div className="flex flex-wrap justify-center gap-4 pt-4">
+                {/* Join or Delete Donor */}
                 {isDonar ? (
-                  <div data-aos="zoom-in" data-aos-duration="1500">
-                    <Link
-                      onClick={() => handleDeleteDonar(user?.email)}
-                      className={`btn text-sm border-none ${
-                        theme === "light"
-                          ? "bg-gradient-to-l from-pink-500 to-red-600 text-white"
-                          : "bg-gradient-to-l from-pink-300 to-red-300 text-black"
-                      }`}
-                    >
-                      <span className="pt-1">ডিলিট ডোনার</span>{" "}
-                      <PiWarningDiamondFill />
-                    </Link>
-                  </div>
+                  <Link
+                    onClick={() => handleDeleteDonar(user?.email)}
+                    className="flex items-center px-5 py-2 text-sm md:text-base font-medium rounded-full shadow-lg hover:scale-105 transition-transform duration-300 bg-gradient-to-r from-red-400 to-pink-500 text-white"
+                  >
+                    ডিলিট ডোনার
+                  </Link>
                 ) : (
-                  <div data-aos="zoom-in" data-aos-duration="1500">
-                    <Link
-                      to="/donarForm"
-                      className={`btn text-sm flex items-center border-none ${
-                        theme === "light"
-                          ? "bg-gradient-to-l from-pink-500 to-red-600 text-white"
-                          : "bg-gradient-to-l from-pink-300 to-red-300 text-black"
-                      }`}
-                    >
-                      <span className="pt-1">জয়েন ডোনার</span>
-                    </Link>
-                  </div>
+                  <Link
+                    to="/donarForm"
+                    className="flex items-center px-5 py-2 text-sm md:text-base font-medium rounded-full shadow-lg hover:scale-105 transition-transform duration-300 bg-gradient-to-r from-pink-500 to-red-500 text-white"
+                  >
+                    জয়েন ডোনার
+                  </Link>
                 )}
 
+                {/* Logout Button */}
                 <button
-                  data-aos="zoom-in"
-                  data-aos-duration="1500"
                   onClick={handleLogoutUser}
-                  className={`py-2 rounded-lg border-none ${
-                    theme === "light"
-                      ? "bg-gradient-to-l from-pink-500 to-red-600 text-white"
-                      : "bg-gradient-to-l from-pink-300 to-red-300 text-black"
-                  } border duration-500 text-sm flex flex-row gap-1 px-3 items-center`}
+                  className="flex items-center gap-2 px-5 py-2 text-sm md:text-base font-medium rounded-full shadow-lg hover:scale-105 transition-transform duration-300 bg-gradient-to-r from-pink-500 to-red-500 text-white"
                 >
-                  <FaPowerOff /> <span className="pt-1">লগ আউট</span>
+                  <FaPowerOff className="text-lg" /> লগ আউট
                 </button>
               </div>
             </div>

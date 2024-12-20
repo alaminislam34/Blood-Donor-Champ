@@ -8,6 +8,14 @@ export default {
         donateBack: "url('./src/assets/donation.jpg')",
         BannerBack: "url('./src/assets/backBanner.jpg')",
       },
+      perspective: {
+        1000: "1000px",
+      },
+      rotate: {
+        x3: "3deg",
+        y3: "3deg",
+      },
+
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],

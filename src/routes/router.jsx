@@ -32,8 +32,6 @@ const router = createBrowserRouter([
       {
         path: "/donar",
         element: <Donar />,
-        loader: () =>
-          fetch("https://blood-donation-server-ar.vercel.app/donar"),
       },
       {
         path: "/reviews",

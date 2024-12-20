@@ -31,37 +31,41 @@ const DonarForm = () => {
     /^(https?:\/\/)?(www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/;
   // Form Submission Handler
   const handleOnSubmit = (e) => {
-    axios.get(`${import.meta.env.VITE_URL}/donar`).then((result) => {
-      if (result.data.some((d) => d.email === user.email)) {
-        Swal.fire({
-          title: "ওহহ!!",
-          text: "ইতিমধ্যে ডোনার হিসেবে যুক্ত আছেন।",
-          icon: "warning",
-          confirmButtonText: "আচ্ছা",
-        });
-        reset();
-      } else {
-        console.table({ e });
-        axios.post(`${import.meta.env.VITE_URL}/donar`, e).then((result) => {
-          if (result) {
-            Swal.fire({
-              title: "সম্পূর্ণ!",
-              text: "আপনি ডোনার হিসেবে যুক্ত হয়েছে",
-              icon: "success",
-              confirmButtonText: "আচ্ছা",
+    axios
+      .get(`https://blood-donation-server-ar.vercel.app/donar`)
+      .then((result) => {
+        if (result.data.some((d) => d.email === user.email)) {
+          Swal.fire({
+            title: "ওহহ!!",
+            text: "ইতিমধ্যে ডোনার হিসেবে যুক্ত আছেন।",
+            icon: "warning",
+            confirmButtonText: "আচ্ছা",
+          });
+          reset();
+        } else {
+          console.table({ e });
+          axios
+            .post(`https://blood-donation-server-ar.vercel.app/donar`, e)
+            .then((result) => {
+              if (result) {
+                Swal.fire({
+                  title: "সম্পূর্ণ!",
+                  text: "আপনি ডোনার হিসেবে যুক্ত হয়েছে",
+                  icon: "success",
+                  confirmButtonText: "আচ্ছা",
+                });
+                reset();
+                setLoader(true);
+                setTimeout(() => {
+                  setLoader(false);
+                  navigate("/");
+                }, 2000);
+              } else {
+                return;
+              }
             });
-            reset();
-            setLoader(true);
-            setTimeout(() => {
-              setLoader(false);
-              navigate("/");
-            }, 2000);
-          } else {
-            return;
-          }
-        });
-      }
-    });
+        }
+      });
   };
 
   return (

@@ -96,12 +96,12 @@ const Footer = () => {
                 ফেসবুক :{" "}
                 <a href="https://www.facebook.com/ar.alamin34">Facebook</a>
               </li>
-              <li>ঠিকানা:</li>
-              <li className="ml-2">
-                <p className="">গ্রাম: জাহানাবাদ বাজারপাড়া</p>
-                <p className="">উপজেলা: পার্বতীপুর</p>
-                <p className="">জেলা: দিনাজপুর</p>
-                <p className="">বিভাগ: রংপুর</p>
+              <li>
+                ঠিকানা:
+                <span className="">গ্রাম: জাহানাবাদ বাজারপাড়া</span>
+                <span className="">উপজেলা: পার্বতীপুর</span>
+                <span className="">জেলা: দিনাজপুর</span>
+                <span className="">বিভাগ: রংপুর</span>
               </li>
             </ul>
           </div>
