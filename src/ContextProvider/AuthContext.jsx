@@ -31,13 +31,9 @@ const AuthProvider = ({ children }) => {
           } else {
             const userEmail = { email: currentUser?.email };
             axios
-              .post(
-                `https://blood-donation-server-ar.vercel.app/jwt`,
-                userEmail,
-                {
-                  withCredentials: true,
-                }
-              )
+              .post(`${import.meta.env.VITE_URL}/jwt`, userEmail, {
+                withCredentials: true,
+              })
               .then(() => {})
               .catch((error) => console.log(error));
 
@@ -52,7 +48,7 @@ const AuthProvider = ({ children }) => {
       } else {
         await axios
           .post(
-            `https://blood-donation-server-ar.vercel.app/logout`,
+            `${import.meta.env.VITE_URL}/logout`,
             {},
             { withCredentials: true }
           )

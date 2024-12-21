@@ -48,7 +48,7 @@ const Profile = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get("https://blood-donation-server-ar.vercel.app/donar")
+        .get(`${import.meta.env.VITE_URL}/donar`)
         .then((result) => {
           if (result.data.some((d) => d.email === user.email)) {
             setIsDonar(true);
@@ -72,7 +72,7 @@ const Profile = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`https://blood-donation-server-ar.vercel.app/donar/${email}`)
+          .delete(`${import.meta.env.VITE_URL}/donar/${email}`)
           .then((result) => {
             if (result.data.deletedCount > 0) {
               Swal.fire({

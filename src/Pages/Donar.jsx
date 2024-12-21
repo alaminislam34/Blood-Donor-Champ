@@ -14,7 +14,7 @@ const Donar = () => {
 
   useEffect(() => {
     axios
-      .get(`https://blood-donation-server-ar.vercel.app/donar`, {
+      .get(`${import.meta.env.VITE_URL}/donar`, {
         withCredentials: true,
         params: { address, bloodGroup },
       })

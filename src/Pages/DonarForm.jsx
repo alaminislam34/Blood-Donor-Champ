@@ -31,41 +31,37 @@ const DonarForm = () => {
     /^(https?:\/\/)?(www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/;
   // Form Submission Handler
   const handleOnSubmit = (e) => {
-    axios
-      .get(`https://blood-donation-server-ar.vercel.app/donar`)
-      .then((result) => {
-        if (result.data.some((d) => d.email === user.email)) {
-          Swal.fire({
-            title: "ওহহ!!",
-            text: "ইতিমধ্যে ডোনার হিসেবে যুক্ত আছেন।",
-            icon: "warning",
-            confirmButtonText: "আচ্ছা",
-          });
-          reset();
-        } else {
-          console.table({ e });
-          axios
-            .post(`https://blood-donation-server-ar.vercel.app/donar`, e)
-            .then((result) => {
-              if (result) {
-                Swal.fire({
-                  title: "সম্পূর্ণ!",
-                  text: "আপনি ডোনার হিসেবে যুক্ত হয়েছে",
-                  icon: "success",
-                  confirmButtonText: "আচ্ছা",
-                });
-                reset();
-                setLoader(true);
-                setTimeout(() => {
-                  setLoader(false);
-                  navigate("/");
-                }, 2000);
-              } else {
-                return;
-              }
+    axios.get(`${import.meta.env.VITE_URL}/donar`).then((result) => {
+      if (result.data.some((d) => d.email === user.email)) {
+        Swal.fire({
+          title: "ওহহ!!",
+          text: "ইতিমধ্যে ডোনার হিসেবে যুক্ত আছেন।",
+          icon: "warning",
+          confirmButtonText: "আচ্ছা",
+        });
+        reset();
+      } else {
+        console.table({ e });
+        axios.post(`${import.meta.env.VITE_URL}/donar`, e).then((result) => {
+          if (result) {
+            Swal.fire({
+              title: "সম্পূর্ণ!",
+              text: "আপনি ডোনার হিসেবে যুক্ত হয়েছে",
+              icon: "success",
+              confirmButtonText: "আচ্ছা",
             });
-        }
-      });
+            reset();
+            setLoader(true);
+            setTimeout(() => {
+              setLoader(false);
+              navigate("/");
+            }, 2000);
+          } else {
+            return;
+          }
+        });
+      }
+    });
   };
 
   return (
@@ -74,9 +70,9 @@ const DonarForm = () => {
         onSubmit={handleSubmit(handleOnSubmit)}
         className={`donorForm ${
           theme === "light"
-            ? "bg-gradient-to-tr from-red-100 to-red-200"
-            : "bg-gradient-to-br from-[#f74747] to-[#701c1c]"
-        } p-4 md:p-6 rounded-lg flex flex-col gap-4 md:gap-6 w-10/12 md:w-10/12 lg:w-8/12 mx-auto border`}
+            ? "bg-gradient-to-tr from-[#ffe5e5] to-[#ffb3c6]" // Light mode
+            : "bg-gradient-to-br from-[#4d0000] to-[#8c004d]" // Dark mode with black tone
+        } p-4 md:p-6 rounded-lg flex flex-col gap-4 md:gap-6 w-10/12 md:w-10/12 lg:w-8/12 mx-auto border border-gray-700 shadow-xl`}
       >
         <h2
           className={`text-center text-2xl md:text-3xl font-bold bg-gradient-to-r ${
@@ -88,14 +84,14 @@ const DonarForm = () => {
           ডোনার হিসেবে জয়েন করুন
         </h2>
 
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
           {/* Name */}
           <label className="flex flex-col gap-2">
             <span className="text-base font-medium">আপনার সম্পূর্ণ নাম</span>
             <input
               type="text"
               placeholder="আপনার সম্পূর্ণ নাম লিখুন"
-              className="border py-2 px-3 rounded"
+              className="border py-2 px-3 rounded text-sm300"
               {...register("name", {
                 required: "আপনার নাম দিতে হবে",
                 minLength: {
@@ -121,7 +117,7 @@ const DonarForm = () => {
             <input
               type="number"
               placeholder="আপনার বয়স "
-              className="border py-2 px-3 rounded"
+              className="border py-2 px-3 rounded text-sm"
               {...register("age", {
                 required: "আপনার বয়স দিতে হবে",
                 min: {
@@ -142,7 +138,7 @@ const DonarForm = () => {
           </label>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
           {/* Email */}
           <label className="flex flex-col gap-2">
             <span className="text-base font-medium">আপনার ইমেল</span>
@@ -150,7 +146,7 @@ const DonarForm = () => {
               type="email"
               value={user?.email || ""}
               readOnly
-              className="border py-2 px-3 bg-gray-200 rounded"
+              className="border py-2 px-3 bg-gray-200 rounded text-sm placeholder:text-base-300"
               {...register("email")}
             />
           </label>
@@ -161,7 +157,7 @@ const DonarForm = () => {
             <input
               type="number"
               placeholder="আপনার ফোন নম্বর লিখুন"
-              className="border py-2 px-3 rounded"
+              className="border py-2 px-3 rounded text-sm"
               {...register("number", {
                 required: "আপনার ফোন নম্বর দিতে হবে.",
                 validate: {
@@ -183,7 +179,7 @@ const DonarForm = () => {
             )}
           </label>
         </div>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
           {/* facebook link */}
           <label className="flex flex-col gap-2">
             <span className="text-base font-medium">
@@ -192,7 +188,7 @@ const DonarForm = () => {
             <input
               type="text"
               placeholder="আপনার ফেসবুক লিংক"
-              className="border py-2 px-3 bg-gray-200 rounded"
+              className="border py-2 px-3 bg-gray-200 rounded text-sm"
               {...register("fbLink", {
                 required: false,
               })}
@@ -216,7 +212,7 @@ const DonarForm = () => {
             <input
               type="number"
               placeholder="আপনার হোয়াটস অ্যাপ নম্বর"
-              className="border py-2 px-3 bg-gray-200 rounded"
+              className="border py-2 px-3 bg-gray-200 rounded text-sm"
               {...register("whatsappNumber", {
                 validate: (value) => {
                   if (value) {
@@ -240,14 +236,14 @@ const DonarForm = () => {
           </label>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
           {/* Address */}
           <label className="flex flex-col gap-2">
             <span className="text-base font-medium">আপনার ঠিকানা</span>
             <input
               type="text"
               placeholder="আপনার ঠিকানা লিখুন"
-              className="border py-2 px-3 rounded"
+              className="border py-2 px-3 rounded text-sm"
               {...register("address", { required: "আপনার ঠিকানা দিতে হবে." })}
             />
             {errors.address && (
@@ -269,7 +265,7 @@ const DonarForm = () => {
             <input
               type="text"
               placeholder="আপনার স্বাস্থের অবস্থা"
-              className="border py-2 px-3 rounded"
+              className="border py-2 px-3 rounded text-sm"
               {...register("healthInfo", {
                 required: "আপনার স্বাস্থের অবস্থা জানান",
               })}
@@ -286,14 +282,14 @@ const DonarForm = () => {
           </label>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 gap-4 lg:gap-6">
           {/* Previous Donate */}
           <label className="flex flex-col gap-2">
             <span className="text-base font-medium">পূর্বে দান করেছেন?</span>
             <input
               type="text"
               placeholder="আপনি পূর্বে রক্ত দান করেছেন? "
-              className="border py-2 px-3 rounded"
+              className="border py-2 px-3 rounded text-sm"
               {...register("prevDonate", {
                 required: "আপনার পূর্বে রক্তদান সম্পর্কে জানান",
               })}

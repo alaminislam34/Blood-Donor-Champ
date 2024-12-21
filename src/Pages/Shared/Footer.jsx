@@ -1,7 +1,37 @@
+import { useContext, useState } from "react";
 import logo from "../../assets/team/logo.json";
 import Lottie from "lottie-react";
+import { AuthContext } from "../../ContextProvider/AuthContext";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { motion } from "motion/react";
 
 const Footer = () => {
+  const { theme, user } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleEmailSend = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const message = form.message.value;
+    const email = user?.email;
+    console.table({ name, email, message });
+    const emailSender = { name, email, message };
+
+    setIsLoading(true);
+
+    axios
+      .post(`${import.meta.env.VITE_URL}/send-email`, emailSender, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setIsLoading(false);
+        form.reset();
+        document.getElementById("my_modal_5").close();
+        toast.success("Email send successfully");
+      });
+  };
   return (
     <div className="">
       <footer className="flex flex-col justify-center gap-4 md:gap-6 bg-base-300 text-content py-6 md:py-8">
@@ -104,6 +134,13 @@ const Footer = () => {
                 <span className="">বিভাগ: রংপুর</span>
               </li>
             </ul>
+            <button
+              onClick={() => document.getElementById("my_modal_5").showModal()}
+              className="btn relative overflow-hidden my-2 group bg-transparent border border-red-400"
+            >
+              <span className="relative z-10 ">আমাকে ইমেইল করুন</span>
+              <span className="absolute w-0 h-0 top-1/2 left-1/2 rounded-lg z-0 group-hover:top-0 group-hover:left-0 group-hover:w-full group-hover:h-full duration-700 bg-gradient-to-r from-red-500 to-pink-400"></span>
+            </button>
           </div>
         </div>
         <div className="space-y-2 w-full text-center flex flex-col justify-center mt-4">
@@ -153,7 +190,101 @@ const Footer = () => {
             </div>
           </div>
         </div>
+        {/* modal  */}
+        {/* Open the modal using document.getElementById('ID').showModal() method */}
+        <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className={`modal-box ${
+              theme === "light"
+                ? "bg-gradient-to-br from-pink-50 via-white to-red-50 text-gray-800"
+                : "bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white"
+            } relative p-6 md:p-8 rounded-2xl shadow-2xl overflow-hidden max-w-md sm:max-w-lg md:max-w-2xl mx-auto`}
+            data-aos="zoom-in"
+          >
+            {/* Background Decoration */}
+            <motion.div
+              className="absolute inset-0 -z-10 blur-3xl opacity-20"
+              style={{
+                background:
+                  theme === "light"
+                    ? "radial-gradient(circle, #ffe4e1, #ff8ab2)"
+                    : "radial-gradient(circle, #1e293b, #0f172a)",
+              }}
+            ></motion.div>
+
+            {/* Title */}
+            <motion.h3
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-4 md:mb-6 text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wider"
+            >
+              {theme === "light" ? "Let’s Connect!" : "আমাকে ইমেইল করুন"}
+            </motion.h3>
+
+            {/* Form */}
+            <motion.form
+              onSubmit={handleEmailSend}
+              className="flex flex-col gap-4 md:gap-6"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              {/* Name Input */}
+              <motion.input
+                required
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                className="w-full p-3 rounded-lg border bg-transparent text-base md:text-lg transition-all duration-300"
+                whileFocus={{ scale: 1.02 }}
+              />
+              {/* Message Input */}
+              <motion.textarea
+                required
+                name="message"
+                placeholder="Your Message"
+                className="w-full p-3 rounded-lg border bg-transparent text-base md:text-lg transition-all duration-300"
+                rows={4}
+                whileFocus={{ scale: 1.02 }}
+              ></motion.textarea>
+              {/* Submit Button */}
+              {isLoading ? (
+                <button
+                  type="button"
+                  className="w-full p-3 rounded-lg bg-red-500 text-white text-base md:text-lg flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <span className="loading loading-dots loading-md"></span>
+                  Sending...
+                </button>
+              ) : (
+                <motion.button
+                  type="submit"
+                  className="w-full p-3 rounded-lg bg-gradient-to-br from-red-500 to-pink-500 text-white font-medium shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Send Email
+                </motion.button>
+              )}
+            </motion.form>
+
+            {/* Modal Action (Close Button) */}
+            <div className="modal-action flex justify-end">
+              <motion.button
+                className="btn btn-outline"
+                whileHover={{ scale: 1.1 }}
+                onClick={() => document.getElementById("my_modal_5").close()}
+              >
+                Close
+              </motion.button>
+            </div>
+          </motion.div>
+        </dialog>
       </footer>
+      <ToastContainer />
     </div>
   );
 };

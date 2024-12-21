@@ -36,7 +36,7 @@ const Reviews = () => {
   const fetchReviews = async () => {
     try {
       const result = await axios.get(
-        `https://blood-donation-server-ar.vercel.app/donor-reviews`
+        `${import.meta.env.VITE_URL}/donor-reviews`
       );
       setReviews(result.data);
     } catch (error) {
@@ -58,7 +58,7 @@ const Reviews = () => {
       try {
         // Update like count and likedBy
         const result = await axios.patch(
-          `https://blood-donation-server-ar.vercel.app/donor-reviews/${id}`,
+          `${import.meta.env.VITE_URL}/donor-reviews/${id}`,
           { userEmail }
         );
         // Update local state to reflect changes immediately
@@ -88,7 +88,7 @@ const Reviews = () => {
     if (user) {
       try {
         const result = await axios.post(
-          "https://blood-donation-server-ar.vercel.app/donor-reviews",
+          `${import.meta.env.VITE_URL}/donor-reviews`,
           {
             ...data,
             ...userInfo,
@@ -114,13 +114,11 @@ const Reviews = () => {
 
   // handle comment delete
   const handleDeleteComment = (id) => {
-    axios
-      .delete(`https://blood-donation-server-ar.vercel.app/donor-reviews/${id}`)
-      .then(() => {
-        toast("আপনার কমেন্ট ডিলিট হয়েছে");
-        const remainingComments = reviews.filter((re) => re._id !== id);
-        setReviews(remainingComments);
-      });
+    axios.delete(`${import.meta.env.VITE_URL}/donor-reviews/${id}`).then(() => {
+      toast("আপনার কমেন্ট ডিলিট হয়েছে");
+      const remainingComments = reviews.filter((re) => re._id !== id);
+      setReviews(remainingComments);
+    });
   };
 
   return (
@@ -227,13 +225,12 @@ const Reviews = () => {
             data-aos-offset="200"
             data-aos-delay="600"
             data-aos-duration="1200"
-            className={`w-full h-full object-cover bg-cover flex justify-center items-center ${
-              theme === "light"
-                ? "bg-gradient-to-br from-pink-100 to-red-100"
-                : "bg-gray-900"
-            } p-4 rounded-l-xl`}
+            className={`w-full h-full flex justify-center items-center  p-4 rounded-l-xl`}
           >
-            <Lottie animationData={feedback} className="" />
+            <Lottie
+              animationData={feedback}
+              className="h-full w-full object-cover bg-cover"
+            />
           </div>
 
           {/* Form Section */}
