@@ -1,8 +1,7 @@
 import Lottie from "lottie-react";
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import team1 from "../../assets/team/blood1.json";
 import team2 from "../../assets/team/blood2.json";
-import team3 from "../../assets/team/blood3.json";
 import { MdBloodtype } from "react-icons/md";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -13,10 +12,17 @@ import needed from "../../assets/neededBl.jpg";
 import donate from "../../assets/blad.jpg";
 import digital from "../../assets/digitalPlatform.png";
 import { motion } from "motion/react";
+import Aos from "aos";
 
 const MainSection = () => {
   const navigate = useNavigate();
-
+  useEffect(() => {
+    Aos.init({
+      delay: 100,
+      once: true,
+      offset: 250,
+    });
+  }, []);
   return (
     <div className="">
       <div
@@ -113,6 +119,7 @@ const MainSection = () => {
               data-aos="fade-up"
               data-aos-duration="1000"
               data-aos-delay="400"
+              className=""
             >
               <h3 className="text-xl md:text-2xl font-semibold pb-2">
                 হাসপাতালে রক্তের সংকট:
@@ -236,7 +243,12 @@ const MainSection = () => {
 
         {/* More Information */}
         <section className="grid md:grid-cols-3 gap-6 my-12">
-          <div className="md:col-span-2">
+          <div
+            data-aos="fade-up"
+            data-aos-duration="2000"
+            data-aos-delay="1000"
+            className="md:col-span-2"
+          >
             <ul className="space-y-4">
               <li className="font-semibold text-lg">জীবন বাঁচান:</li>
               <p className="text-base">
@@ -257,7 +269,7 @@ const MainSection = () => {
           <div
             data-aos="fade-up"
             data-aos-duration="2000"
-            data-aos-delay="1800"
+            data-aos-delay="1000"
           >
             <Lottie
               animationData={team2}

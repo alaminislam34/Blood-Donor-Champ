@@ -50,29 +50,28 @@ const Navbar = () => {
   useEffect(() => {
     switch (location.pathname) {
       case "/":
-        document.title = "রক্তদান এর নায়ক";
+        document.title = "রক্তদানের নায়ক - হোমপেজ";
         break;
       case "/donar":
-        document.title = "রক্তদাতা";
+        document.title = "রক্তদাতাদের তালিকা";
         break;
       case "/reviews":
-        document.title = "মতামত";
+        document.title = "ব্যবহারকারীর মতামত";
         break;
       case "/profile":
-        document.title = "প্রোফাইল";
+        document.title = "আপনার প্রোফাইল";
         break;
       case "/donarForm":
-        document.title = "ডোনার ফর্ম";
+        document.title = "রক্তদাতা নিবন্ধন ফর্ম";
         break;
       case "/login":
-        document.title = "লগইন";
+        document.title = "লগইন - অ্যাকাউন্টে প্রবেশ করুন";
         break;
       case "/register":
-        document.title = "রেজিস্টার";
+        document.title = "নতুন অ্যাকাউন্ট তৈরি করুন";
         break;
     }
   }, [location.pathname]);
-
   const menu = (
     <>
       <NavLink to="/">হোম</NavLink>
@@ -153,7 +152,7 @@ const Navbar = () => {
               onClick={() =>
                 handleTheme(`${theme === "light" ? "dark" : "light"}`)
               }
-              className={`py-1 px-1 text-xl *:filter *:brightness-150 *:font-bold border rounded-xl ${
+              className={`py-1 px-1 text-xl *:filter *:brightness-150 *:font-bold border rounded-full ${
                 theme === "light"
                   ? "shadow-[2px_2px_10px_1px_rgba(0,0,0,0.4)]"
                   : "shadow-[2px_2px_10px_1px_rgba(255,255,255,0.05)] border-transparent bg-[#2A323C]"

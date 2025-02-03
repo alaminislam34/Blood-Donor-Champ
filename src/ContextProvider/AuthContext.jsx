@@ -7,10 +7,13 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authError, setAuthError] = useState(null);
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [loading, setLoading] = useState(true);
   const [loader, setLoader] = useState(false);
   const [isDonar, setIsDonar] = useState(false);
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   //   state handle
   useEffect(() => {
